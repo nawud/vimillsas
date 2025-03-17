@@ -2,7 +2,7 @@ package com.example.vimilsas;
 
 import com.example.vimilsas.DAO.ArticleDAO;
 import com.example.vimilsas.entity.Article;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +16,7 @@ public class VimilsasApplication {
 
 	private static ArticleDAO articleDAO;
 
-	@Autowired
+	//@Autowired
 	public VimilsasApplication(ArticleDAO articleDAO) {
 		VimilsasApplication.articleDAO = articleDAO;
 	}
@@ -59,6 +59,13 @@ public class VimilsasApplication {
 					case 5:
 						exit = true;
 						System.out.println("Saliendo del sistema...");
+						try {
+							Thread.sleep(1000); // Wait for a second
+						} catch (InterruptedException e) {
+							System.out.println("Interrupción mientras esperaba.");
+						}
+						System.out.println("Terminando aplicación...");
+						System.exit(0);
 						break;
 					default:
 						System.out.println("Opción no válida. Intente de nuevo.");
@@ -103,12 +110,21 @@ public class VimilsasApplication {
 		System.out.print("Ingrese la descripción del artículo: ");
 		article.setDescription(scanner.nextLine());
 
+		System.out.print("Ingrese las características del artículo: ");
+		article.setFeatures(scanner.nextLine());
+
 		System.out.print("Ingrese el precio del artículo: ");
-		article.setPrice(scanner.nextDouble());
-		scanner.nextLine();
+		String input = scanner.nextLine();
 
+		// Reemplaza la coma por un punto si el usuario usa coma ==>> la maquina local de Víctor
+		input = input.replace(",", ".");
+		article.setPrice(Float.parseFloat(input));
 
+		System.out.print("Ingrese la url de la imagen del artículo: ");
+		article.setImageUrl(scanner.nextLine());
 
+		 
+		
 		articleDAO.save(article);
 		System.out.println("\nArtículo añadido correctamente");
 	}

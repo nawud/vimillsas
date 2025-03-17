@@ -2,7 +2,7 @@ package com.example.vimilsas.controller;
 
 import com.example.vimilsas.DAO.ArticleDAO;
 import com.example.vimilsas.entity.Article;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public class ArticleController {
 
     private final ArticleDAO articleDAO;
 
-    @Autowired
+    //@Autowired
     public ArticleController(ArticleDAO articleDAO) {
         this.articleDAO = articleDAO;
     }

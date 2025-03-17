@@ -1,7 +1,7 @@
 package com.example.vimilsas.DAO;
 
 import com.example.vimilsas.entity.Article;
-import org.springframework.transaction.annotation.Transactional;
+//import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
