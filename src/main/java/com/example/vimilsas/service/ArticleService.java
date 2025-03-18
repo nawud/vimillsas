@@ -2,7 +2,7 @@ package com.example.vimilsas.service;
 
 import com.example.vimilsas.DAO.ArticleDAO;
 import com.example.vimilsas.entity.Article;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public class ArticleService {
 
     private final ArticleDAO articleDAO;
 
-    @Autowired
+    //@Autowired
     public ArticleService(ArticleDAO articleDAO) {
         this.articleDAO = articleDAO;
     }
