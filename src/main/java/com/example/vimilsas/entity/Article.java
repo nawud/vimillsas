@@ -1,7 +1,7 @@
 package com.example.vimilsas.entity;
 
 import jakarta.persistence.*;
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
@@ -22,7 +22,7 @@ public class Article {
     private Date creationDate;
     @Column(name = "features") // Características opcionales
     private String features;
-
+    
     @Column(name = "description", length = 500) // Máximo 500 caracteres
     private String description;
 
@@ -32,11 +32,17 @@ public class Article {
     @Column(name = "price", nullable = false) // Campo obligatorio
     private float price;
 
+    @ManyToOne(fetch = FetchType.EAGER) // Carga diferida para optimización
+    @JoinColumn(name = "brand_id", referencedColumnName = "id", nullable = true) // Llave foránea
+    private Brand brand;
+
+
     // Constructor vacío
     public Article() {}
 
     // Constructor completo
-    public Article(String categoryName, String name, Date creationDate, String features, String description, String imageUrl, float price) {
+    public Article(String categoryName, String name, Date creationDate,
+     String features, String description, String imageUrl, float price, Brand brand) {
         this.categoryName = categoryName;
         this.name = name;
         this.creationDate = creationDate;
@@ -110,6 +116,13 @@ public class Article {
     public void setPrice(float price) {
         this.price = price;
     }
+    public Brand getBrand() {
+        return this.brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
 
 
 
@@ -124,6 +137,7 @@ public class Article {
                 ", description='" + description + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", price=" + price +
+                ", brand=" + brand +
                 '}';
     }
 }
