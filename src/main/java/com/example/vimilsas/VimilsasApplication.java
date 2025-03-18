@@ -7,8 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,6 +42,7 @@ public class VimilsasApplication {
 				System.out.println("5. Salir");
 				System.out.println("6. Buscar artículos por categoría");
 				System.out.println("7. Listar artículos por fecha de creación");
+				System.out.println("Ingrese la fecha de creación (formato DD/MM/YYYY HH:mm:ss): \n");
 				System.out.print("Seleccione una opción: ");
 
 				int option = scanner.nextInt();
@@ -97,7 +99,8 @@ public class VimilsasApplication {
 	}
 
 
-	private void listArticlesByCreationDate() {
+	private static void listArticlesByCreationDate() {
+
 		List<Article> articles = articleDAO.findAll();
 
 		// Ordenar la lista por fecha de creación (de más reciente a más antiguo)
@@ -173,17 +176,29 @@ public class VimilsasApplication {
 
 		System.out.print("Ingrese el precio del artículo: ");
 		String input = scanner.nextLine();
-
-		// Reemplaza la coma por un punto si el usuario usa coma
-		input = input.replace(",", ".");
+		input = input.replace(",", "."); // Reemplaza coma por punto si el usuario usa coma
 		article.setPrice(Float.parseFloat(input));
 
-		System.out.print("Ingrese la url de la imagen del artículo: ");
+		System.out.print("Ingrese la URL de la imagen del artículo: ");
 		article.setImageUrl(scanner.nextLine());
+
+		// Pedir manualmente la fecha de creación
+		System.out.print("Ingrese la fecha de creación (formato DD/MM/YYYY HH:mm:ss): ");
+		String dateStr = scanner.nextLine();
+
+		try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			Date creationDate = dateFormat.parse(dateStr);
+			article.setCreationDate(creationDate);
+		} catch (ParseException e) {
+			System.out.println("Formato de fecha inválido. Se usará la fecha actual.");
+			article.setCreationDate(new Date());
+		}
 
 		articleDAO.save(article);
 		System.out.println("\nArtículo añadido correctamente");
 	}
+
 
 	private static void deleteArticle(Scanner scanner) {
 		System.out.print("Ingrese el ID del artículo a eliminar: ");

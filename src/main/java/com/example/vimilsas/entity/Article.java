@@ -111,10 +111,7 @@ public class Article {
         this.price = price;
     }
 
-    @PrePersist
-    private void onCreate() {
-        creationDate = new Date();
-    }
+
 
     @Override
     public String toString() {
