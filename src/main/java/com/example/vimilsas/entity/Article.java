@@ -1,11 +1,9 @@
 package com.example.vimilsas.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "article")// Asegúrate de que esta tabla existe en tu base de datos
@@ -19,7 +17,9 @@ public class Article {
     private String categoryName;
     @Column(name = "name", nullable = false) // Nombre obligatorio
     private String name;
-
+    @Column(name="creation_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
     @Column(name = "features") // Características opcionales
     private String features;
 
@@ -36,8 +36,10 @@ public class Article {
     public Article() {}
 
     // Constructor completo
-    public Article(String name, String features, String description, String imageUrl, float price) {
+    public Article(String categoryName, String name, Date creationDate, String features, String description, String imageUrl, float price) {
+        this.categoryName = categoryName;
         this.name = name;
+        this.creationDate = creationDate;
         this.features = features;
         this.description = description;
         this.imageUrl = imageUrl;
@@ -59,6 +61,15 @@ public class Article {
 
     public String getCategoryName() {
         return categoryName;
+    }
+
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public void setCategoryName(String categoryName) {
@@ -100,9 +111,22 @@ public class Article {
         this.price = price;
     }
 
+    @PrePersist
+    private void onCreate() {
+        creationDate = new Date();
+    }
+
     @Override
     public String toString() {
-        return "Article [id=" + id + ", name=" + name + ", features=" + features + ", description=" + description
-                + ", imageUrl=" + imageUrl + ", price=" + price + "]";
+        return "Article{" +
+                "id=" + id +
+                ", categoryName='" + categoryName + '\'' +
+                ", name='" + name + '\'' +
+                ", creationDate=" + creationDate +
+                ", features='" + features + '\'' +
+                ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,6 +40,7 @@ public class VimilsasApplication {
 				System.out.println("4. Eliminar artículo");
 				System.out.println("5. Salir");
 				System.out.println("6. Buscar artículos por categoría");
+				System.out.println("7. Listar artículos por fecha de creación");
 				System.out.print("Seleccione una opción: ");
 
 				int option = scanner.nextInt();
@@ -71,6 +73,9 @@ public class VimilsasApplication {
 					case 6:
 						findArticlesByCategory(scanner);
 						break;
+					case 7:
+						listArticlesByCreationDate();
+						break;
 					default:
 						System.out.println("Opción no válida. Intente de nuevo.");
 				}
@@ -92,7 +97,30 @@ public class VimilsasApplication {
 	}
 
 
+	private void listArticlesByCreationDate() {
+		List<Article> articles = articleDAO.findAll();
 
+		// Ordenar la lista por fecha de creación (de más reciente a más antiguo)
+		articles.sort((a1, a2) -> {
+			if (a1.getCreationDate() == null || a2.getCreationDate() == null)
+				return 0;
+			return a2.getCreationDate().compareTo(a1.getCreationDate());
+		});
+
+		System.out.println("\n== Artículos ordenados por fecha de creación (más recientes primero) ==");
+		if (articles.isEmpty()) {
+			System.out.println("No hay artículos registrados.");
+		} else {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			for (Article article : articles) {
+				String dateStr = article.getCreationDate() != null ?
+						dateFormat.format(article.getCreationDate()) : "N/A";
+				System.out.println(article.getId() + ": " + article.getName() +
+						" - Categoría: " + article.getCategoryName() +
+						" - Creado: " + dateStr);
+			}
+		}
+	}
 	private void findArticlesByCategory(Scanner scanner) {
 		System.out.print("Ingrese la categoría a buscar: ");
 		String category = scanner.nextLine();
