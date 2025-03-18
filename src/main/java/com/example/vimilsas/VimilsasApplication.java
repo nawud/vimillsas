@@ -61,7 +61,7 @@ public class VimilsasApplication {
 						exit = true;
 						System.out.println("Saliendo del sistema...");
 						try {
-							Thread.sleep(1000); // Wait for a second
+							Thread.sleep(1000);
 						} catch (InterruptedException e) {
 							System.out.println("Interrupción mientras esperaba.");
 						}
