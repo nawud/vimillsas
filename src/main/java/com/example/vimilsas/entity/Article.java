@@ -8,13 +8,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "article") // Asegúrate de que esta tabla existe en tu base de datos
+@Table(name = "article")// Asegúrate de que esta tabla existe en tu base de datos
+
 public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incremento en la base de datos
     private int id;
-
+    @Column(name="category_name")
+    private String categoryName;
     @Column(name = "name", nullable = false) // Nombre obligatorio
     private String name;
 
@@ -55,6 +57,13 @@ public class Article {
         return name;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
     public void setName(String name) {
         this.name = name;
     }

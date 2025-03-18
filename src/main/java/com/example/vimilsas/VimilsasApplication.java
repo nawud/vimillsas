@@ -38,6 +38,7 @@ public class VimilsasApplication {
 				System.out.println("3. Añadir nuevo artículo");
 				System.out.println("4. Eliminar artículo");
 				System.out.println("5. Salir");
+				System.out.println("6. Buscar artículos por categoría");
 				System.out.print("Seleccione una opción: ");
 
 				int option = scanner.nextInt();
@@ -67,6 +68,9 @@ public class VimilsasApplication {
 						System.out.println("Terminando aplicación...");
 						System.exit(0);
 						break;
+					case 6:
+						findArticlesByCategory(scanner);
+						break;
 					default:
 						System.out.println("Opción no válida. Intente de nuevo.");
 				}
@@ -87,6 +91,29 @@ public class VimilsasApplication {
 		}
 	}
 
+
+
+	private void findArticlesByCategory(Scanner scanner) {
+		System.out.print("Ingrese la categoría a buscar: ");
+		String category = scanner.nextLine();
+
+		List<Article> articles = articleDAO.findAll();
+		System.out.println("\n== Artículos en la categoría: " + category + " ==");
+
+		boolean found = false;
+		for (Article article : articles) {
+			if (article.getCategoryName() != null &&
+					article.getCategoryName().equalsIgnoreCase(category)) {
+				System.out.println(article);
+				found = true;
+			}
+		}
+
+		if (!found) {
+			System.out.println("No se encontraron artículos en la categoría: " + category);
+		}
+	}
+
 	private static void findArticleById(Scanner scanner) {
 		System.out.print("Ingrese el ID del artículo: ");
 		int id = scanner.nextInt();
@@ -101,11 +128,14 @@ public class VimilsasApplication {
 		}
 	}
 
-	private static void addNewArticle(Scanner scanner) {
+	private void addNewArticle(Scanner scanner) {
 		Article article = new Article();
 
 		System.out.print("Ingrese el nombre del artículo: ");
 		article.setName(scanner.nextLine());
+
+		System.out.print("Ingrese la categoría del artículo: ");
+		article.setCategoryName(scanner.nextLine());
 
 		System.out.print("Ingrese la descripción del artículo: ");
 		article.setDescription(scanner.nextLine());
@@ -116,15 +146,13 @@ public class VimilsasApplication {
 		System.out.print("Ingrese el precio del artículo: ");
 		String input = scanner.nextLine();
 
-		// Reemplaza la coma por un punto si el usuario usa coma ==>> la maquina local de Víctor
+		// Reemplaza la coma por un punto si el usuario usa coma
 		input = input.replace(",", ".");
 		article.setPrice(Float.parseFloat(input));
 
 		System.out.print("Ingrese la url de la imagen del artículo: ");
 		article.setImageUrl(scanner.nextLine());
 
-		 
-		
 		articleDAO.save(article);
 		System.out.println("\nArtículo añadido correctamente");
 	}
