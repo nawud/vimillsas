@@ -52,13 +52,13 @@ public class ArticleDAOImp implements ArticleDAO {
     @Transactional
     @Override
     public Article updateArticle(Article article) {
-        // Validación: busca el artículo existente
+
         Article existingArticle = entityManager.find(Article.class, article.getId());
         if (existingArticle == null) {
             throw new RuntimeException("El artículo con ID " + article.getId() + " no existe.");
         }
 
-        // Actualización de campos del artículo existente
+
         existingArticle.setCategoryName(article.getCategoryName());
         existingArticle.setName(article.getName());
         existingArticle.setCreationDate(article.getCreationDate());
@@ -68,9 +68,9 @@ public class ArticleDAOImp implements ArticleDAO {
         existingArticle.setPrice(article.getPrice());
         existingArticle.setBrand(article.getBrand());
 
-        // Persiste los cambios en el EntityManager
+
         entityManager.merge(existingArticle);
 
-        return existingArticle; // Devuelve el artículo actualizado
+        return existingArticle;
     }
 }

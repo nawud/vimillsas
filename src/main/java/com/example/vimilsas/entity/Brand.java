@@ -23,7 +23,7 @@ public class Brand {
         this.name = name;
     }
 
-    // Getters y setters
+
     public Integer getId() {
         return id;
     }

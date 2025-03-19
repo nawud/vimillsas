@@ -33,7 +33,7 @@ public class BrandDAOImp implements BrandDAO {
 
     @Override
     public List<Brand> findAll() {
-        // Consulta para obtener todas las marcas
+
         TypedQuery<Brand> query = entityManager.createQuery("FROM Brand", Brand.class);
         return query.getResultList();
     }
@@ -41,7 +41,7 @@ public class BrandDAOImp implements BrandDAO {
     @Transactional
     @Override
     public void delete(int id) {
-        // Buscar la marca por ID y eliminarla si existe
+
         Brand brand = entityManager.find(Brand.class, id);
         if (brand != null) {
             entityManager.remove(brand);
