@@ -1,4 +1,11 @@
+create database if not exists store;
 use store;
+
+CREATE TABLE brand (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria con auto-incremento
+    name VARCHAR(255) NOT NULL         -- Nombre obligatorio
+);
+
 CREATE TABLE article (
     id INT AUTO_INCREMENT PRIMARY KEY,          -- Llave primaria con auto-incremento
     category_name VARCHAR(255),                 -- Nombre de la categoría (opcional)
@@ -13,10 +20,6 @@ CREATE TABLE article (
         REFERENCES brand(id)
         ON DELETE SET NULL                      -- Si se elimina la marca, establece NULL
         ON UPDATE CASCADE                       -- Si se actualiza el ID de la marca, propaga el cambio
-);
-CREATE TABLE brand (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria con auto-incremento
-    name VARCHAR(255) NOT NULL         -- Nombre obligatorio
 );
 
 INSERT INTO brand (id, name) VALUES 

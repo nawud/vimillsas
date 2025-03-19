@@ -4,6 +4,7 @@ import com.example.vimilsas.entity.Article;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 //import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +15,7 @@ public class ArticleDAOImp implements ArticleDAO {
 
     private final EntityManager entityManager;
 
-    // @Autowired
+     @Autowired
     public ArticleDAOImp(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

@@ -9,10 +9,12 @@ import com.example.vimilsas.service.BrandService;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 @Component
@@ -28,9 +30,9 @@ public class ArticleCLIController {
     }
 
     public void start(Scanner scanner) {
-        boolean exit = false;
 
-        while (!exit) {
+
+        while (true) {
             System.out.println("\n== Sistema de Gestión de Artículos VIMILSAS ==");
             System.out.println("1. Ver todos los artículos");
             System.out.println("2. Buscar artículo por ID");
@@ -53,10 +55,10 @@ public class ArticleCLIController {
                     findArticleById(scanner);
                     break;
                 case 3:
-                    findArticlesByCategory(scanner); // Buscar por categoría
+                    findArticlesByCategory(scanner);
                     break;
                 case 4:
-                    listArticlesByCreationDate(); // Listar por fecha de creación
+                    listArticlesByCreationDate();
                     break;
                 case 5:
                     addNewArticle(scanner);
@@ -68,7 +70,6 @@ public class ArticleCLIController {
                     deleteArticle(scanner);
                     break;
                 case 8:
-                    exit = true;
                     System.out.println("Saliendo del sistema...");
                     try {
                         Thread.sleep(500);
@@ -107,7 +108,7 @@ public class ArticleCLIController {
     private void addNewArticle(Scanner scanner) {
         Article article = new Article();
     
-        // Solicitar información del artículo
+
         System.out.print("Ingrese el nombre del artículo: ");
         article.setName(scanner.nextLine());
     
@@ -132,7 +133,7 @@ public class ArticleCLIController {
         System.out.print("Ingrese la URL de la imagen del artículo: ");
         article.setImageUrl(scanner.nextLine());
     
-        // Selección de marca
+
         Brand selectedBrand = null;
         do {
             selectedBrand = chooseBrand(scanner);
@@ -142,7 +143,7 @@ public class ArticleCLIController {
         } while (selectedBrand == null);
         article.setBrand(selectedBrand);
     
-        // Fecha de creación con validación
+
         Date creationDate = null;
         do {
             System.out.print("Ingrese la fecha de creación (formato DD/MM/YYYY HH:mm:ss): ");
@@ -156,7 +157,7 @@ public class ArticleCLIController {
             }
         } while (creationDate == null);
     
-        // Guardar el artículo
+
         articleService.saveArticle(article);
         System.out.println("\nArtículo añadido correctamente.");
     }
@@ -165,20 +166,20 @@ public class ArticleCLIController {
     private void updateArticle(Scanner scanner) {
         System.out.print("Ingrese el ID del artículo que desea actualizar: ");
         int articleId = scanner.nextInt();
-        scanner.nextLine(); // Limpiar el buffer
+        scanner.nextLine();
     
-        // Buscar el artículo existente
+
         Article existingArticle = articleService.getArticleById(articleId);
         if (existingArticle == null) {
             System.out.println("Error: No se encontró un artículo con ID " + articleId);
             return;
         }
     
-        // Mostrar el artículo actual
+
         System.out.println("Artículo actual:");
         System.out.println(existingArticle);
     
-        // Actualizar campos
+
         System.out.print("Ingrese el nuevo nombre (actual: " + existingArticle.getName() + "): ");
         String name = scanner.nextLine();
         if (!name.isBlank()) {
@@ -220,7 +221,7 @@ public class ArticleCLIController {
             existingArticle.setFeatures(features);
         }
     
-        // Actualizar marca
+
         System.out.print("¿Desea cambiar la marca del artículo? (s/n): ");
         String changeBrand = scanner.nextLine();
         if (changeBrand.equalsIgnoreCase("s")) {
@@ -233,7 +234,7 @@ public class ArticleCLIController {
             System.out.println("Marca no actualizada. Se mantiene la marca actual.");
         }
     
-        // Actualizar fecha de creación
+
         System.out.print("¿Desea cambiar la fecha de creación? (s/n): ");
         String changeDate = scanner.nextLine();
         if (changeDate.equalsIgnoreCase("s")) {
@@ -253,7 +254,7 @@ public class ArticleCLIController {
             System.out.println("Fecha de creación no actualizada. Se mantiene la fecha actual.");
         }
     
-        // Actualizar en la base de datos
+
         articleService.updateArticle(existingArticle);
         System.out.println("\nArtículo actualizado correctamente.");
     }
@@ -281,35 +282,35 @@ public class ArticleCLIController {
     }
 
     private Brand chooseBrand(Scanner scanner) {
-        List<Brand> brands = brandService.getAllBrands(); // Obtener todas las marcas a través del servicio
+        List<Brand> brands = brandService.getAllBrands();
     
         System.out.println("\n== Selección de Marca ==");
         if (brands.isEmpty()) {
             System.out.println("No hay marcas disponibles en la base de datos.");
-            return null; // Salir si no hay marcas disponibles
+            return null;
         }
     
-        // Mostrar todas las marcas disponibles
+
         for (Brand brand : brands) {
             System.out.println(brand.getId() + ": " + brand.getName());
         }
     
-        // Validación: asegurar que el usuario ingrese un ID válido
+
         Brand selectedBrand = null;
         do {
             System.out.print("Ingrese el ID de la marca: ");
-            while (!scanner.hasNextInt()) { // Validar que el usuario ingrese un número
+            while (!scanner.hasNextInt()) {
                 System.out.println("Entrada inválida. Por favor, ingrese un número.");
-                scanner.next(); // Descartar la entrada no válida
+                scanner.next();
             }
             int brandId = scanner.nextInt();
-            scanner.nextLine(); // Limpiar el buffer
+            scanner.nextLine();
     
-            selectedBrand = brandService.getBrandById(brandId); // Obtener la marca usando el servicio
+            selectedBrand = brandService.getBrandById(brandId);
             if (selectedBrand == null) {
                 System.out.println("Marca no encontrada. Por favor, intente de nuevo.");
             }
-        } while (selectedBrand == null); // Repetir hasta que se seleccione una marca válida
+        } while (selectedBrand == null);
     
         System.out.println("Marca seleccionada: " + selectedBrand.getName());
         return selectedBrand;
@@ -318,15 +319,15 @@ public class ArticleCLIController {
     private void listArticlesByCreationDate() {
         List<Article> articles = articleService.getAllArticles();
     
-        // Ordenar la lista por fecha de creación (descendente)
+
         articles.sort((a1, a2) -> {
             if (a1.getCreationDate() == null || a2.getCreationDate() == null) {
-                return 0; // Si alguna de las fechas es nula, no hacer nada
+                return 0;
             }
             return a2.getCreationDate().compareTo(a1.getCreationDate());
         });
-    
-        // Mostrar los resultados
+
+
         System.out.println("\n== Artículos ordenados por fecha de creación (más recientes primero) ==");
         if (articles.isEmpty()) {
             System.out.println("No hay artículos registrados.");
