@@ -1,46 +1,45 @@
 package com.example.vimilsas.entity;
 
 import jakarta.persistence.*;
-//import java.text.SimpleDateFormat;
+
 
 import java.util.Date;
 
 @Entity
-@Table(name = "article")// Asegúrate de que esta tabla existe en tu base de datos
-
+@Table(name = "article")
 public class Article {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incremento en la base de datos
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name="category_name")
     private String categoryName;
-    @Column(name = "name", nullable = false) // Nombre obligatorio
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name="creation_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @Column(name = "features") // Características opcionales
+    @Column(name = "features")
     private String features;
     
-    @Column(name = "description", length = 500) // Máximo 500 caracteres
+    @Column(name = "description", length = 500)
     private String description;
 
-    @Column(name = "imageUrl", nullable = false) // Obligatorio
+    @Column(name = "imageUrl", nullable = false)
     private String imageUrl;
 
-    @Column(name = "price", nullable = false) // Campo obligatorio
+    @Column(name = "price", nullable = false)
     private float price;
 
-    @ManyToOne(fetch = FetchType.EAGER) // Carga diferida para optimización
-    @JoinColumn(name = "brand_id", referencedColumnName = "id", nullable = true) // Llave foránea
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "brand_id", referencedColumnName = "id", nullable = true)
     private Brand brand;
 
 
-    // Constructor vacío
+
     public Article() {}
 
-    // Constructor completo
+
     public Article(String categoryName, String name, Date creationDate,
      String features, String description, String imageUrl, float price, Brand brand) {
         this.categoryName = categoryName;
@@ -52,7 +51,7 @@ public class Article {
         this.price = price;
     }
 
-    // Getters y Setters
+
     public int getId() {
         return id;
     }
